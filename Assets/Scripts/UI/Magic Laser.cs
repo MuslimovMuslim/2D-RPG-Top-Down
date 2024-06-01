@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Этот скрипт управляет поведением магического лазера. Он содержит следующие ключевые методы:
 public class MagicLaser : MonoBehaviour
 {
     [SerializeField] private float laserGrowTime = 2f;
@@ -11,26 +12,31 @@ public class MagicLaser : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private CapsuleCollider2D capsuleCollider2D;
 
+// Инициализирует компоненты SpriteRenderer и CapsuleCollider2D.
     private void Awake() {
         spriteRenderer = GetComponent<SpriteRenderer>();
         capsuleCollider2D = GetComponent<CapsuleCollider2D>();
     }
 
+//Вызывает метод LaserFaceMouse, который поворачивает лазер в сторону мыши.
     private void Start() {
         LaserFaceMouse();
     }
 
+// Если лазер сталкивается с неразрушимым объектом, он перестает расти.
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.GetComponent<Indestructible>() && !other.isTrigger) {
             isGrowing = false;
         }
     }
 
+//Обновляет дальность лазера и запускает корутину для увеличения длины лазера.
     public void UpdateLaserRange(float laserRange) {
         this.laserRange = laserRange;
         StartCoroutine(IncreaseLaserLengthRoutine());
     }
 
+//Это корутина, которая постепенно увеличивает длину лазера до заданной дальности. Она также обновляет размер и смещение коллайдера.
     private IEnumerator IncreaseLaserLengthRoutine() {
         float timePassed = 0f;
 
@@ -52,6 +58,7 @@ public class MagicLaser : MonoBehaviour
         StartCoroutine(GetComponent<SpriteFade>().SlowFadeRoutine());
     }
 
+//Поворачивает лазер в сторону мыши.
     private void LaserFaceMouse() {
         Vector3 mousePosition = Input.mousePosition;
         mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);

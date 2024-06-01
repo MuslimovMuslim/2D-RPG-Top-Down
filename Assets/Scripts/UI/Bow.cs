@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Этот скрипт реализует интерфейс IWeapon и управляет поведением лука. Он содержит метод Attack, который создает новую стрелу и запускает ее, и метод GetWeaponInfo, который возвращает информацию о луке.
 public class Bow : MonoBehaviour, IWeapon
 {
     [SerializeField] private WeaponInfo weaponInfo;

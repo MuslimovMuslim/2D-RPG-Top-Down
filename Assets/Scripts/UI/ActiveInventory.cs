@@ -2,34 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//управляет активным инвентарем в игре. Вот что делают его методы:
 public class ActiveInventory : Singleton<ActiveInventory>
 {
     private int activeSlotIndexNum = 0;
 
     private PlayerControls playerControls;
 
+
+//Этот метод вызывается при инициализации объекта. Здесь инициализируется playerControls.
     protected override void Awake() {
         base.Awake();
 
         playerControls = new PlayerControls();
     }
 
+//Этот метод вызывается после инициализации всех объектов.Зд-
+//-есь устанавливается обработчик событий для клавиатуры, который вызывает ToggleActiveSlot при нажатии клавиш.
     private void Start() {
         playerControls.Inventory.Keyboard.performed += ctx => ToggleActiveSlot((int)ctx.ReadValue<float>());
     }
 
+//Этот метод вызывается, когда объект становится активным. Здесь включаются playerControls
     private void OnEnable() {
         playerControls.Enable();
     }
-
+//Этот метод вызывается, чтобы экипировать начальное оружие.
+// Он вызывает ToggleActiveHighlight с индексом 0.
     public void EquipStartingWeapon() {
         ToggleActiveHighlight(0);
     }
 
+// Этот метод переключает активный слот на основе переданного значения.
+// Он вызывает ToggleActiveHighlight с индексом, уменьшенным на 1.
     private void ToggleActiveSlot(int numValue) {
         ToggleActiveHighlight(numValue - 1);
     }
 
+// Этот метод выделяет активный слот и вызывает ChangeActiveWeapon.
+// Он также делает все остальные слоты неактивными.
     private void ToggleActiveHighlight(int indexNum) {
         activeSlotIndexNum = indexNum;
 
@@ -43,6 +54,11 @@ public class ActiveInventory : Singleton<ActiveInventory>
         ChangeActiveWeapon();
     }
 
+/*Этот метод меняет активное оружие.
+ Если у ActiveWeapon.Instance уже есть 
+ активное оружие, оно уничтожается. Затем
+  создается новое оружие на основе информации 
+  о оружии в активном слоте инвентаря.*/ 
     private void ChangeActiveWeapon() {
 
         if (ActiveWeapon.Instance.CurrentActiveWeapon != null) {
