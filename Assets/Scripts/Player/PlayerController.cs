@@ -23,6 +23,7 @@ public class PlayerController : Singleton<PlayerController>
     private bool facingLeft = false;
     private bool isDashing = false;
 
+//Инициализация компонентов при создании объекта.
     protected override void Awake() {
         base.Awake();
 
@@ -33,6 +34,7 @@ public class PlayerController : Singleton<PlayerController>
         knockback = GetComponent<Knockback>();
     }
 
+//Настройка начальных параметров и подписка на события.
     private void Start() {
         playerControls.Combat.Dash.performed += _ => Dash();
 
@@ -41,27 +43,33 @@ public class PlayerController : Singleton<PlayerController>
         ActiveInventory.Instance.EquipStartingWeapon();
     }
 
+//Включение управления игрока.
     private void OnEnable() {
         playerControls.Enable();
     }
 
+//Выключение управления игрока.
     private void OnDisable() {
         playerControls.Disable();
     }
 
+//Обработка ввода игрока.
     private void Update() {
         PlayerInput();
     }
 
+//Обновление положения игрока и направления взгляда.
     private void FixedUpdate() {
         AdjustPlayerFacingDirection();
         Move();
     }
 
+//Получает коллайдер оружия.
     public Transform GetWeaponCollider() {
         return weaponCollider;
     }
 
+//Обработка ввода движения игрока и обновление анимаций.
     private void PlayerInput() {
         movement = playerControls.Movement.Move.ReadValue<Vector2>();
 
@@ -69,12 +77,14 @@ public class PlayerController : Singleton<PlayerController>
         myAnimator.SetFloat("moveY", movement.y);
     }
 
+// Перемещение игрока с учетом скорости и состояния.
     private void Move() {
         if (knockback.GettingKnockedBack || PlayerHealth.Instance.isDead) { return; }
 
         rb.MovePosition(rb.position + movement * (moveSpeed * Time.fixedDeltaTime));
     }
 
+//Изменение направления взгляда игрока в зависимости от позиции мыши.
     private void AdjustPlayerFacingDirection() {
         Vector3 mousePos = Input.mousePosition;
         Vector3 playerScreenPoint = Camera.main.WorldToScreenPoint(transform.position);
@@ -88,6 +98,7 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
+//Выполнение рывка при наличии выносливости.
     private void Dash() {
         if (!isDashing && Stamina.Instance.CurrentStamina > 0) {
             Stamina.Instance.UseStamina();
@@ -98,6 +109,7 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
+//Корутин для завершения рывка и восстановления скорости.
     private IEnumerator EndDashRoutine() {
         float dashTime = .2f;
         float dashCD = .25f;

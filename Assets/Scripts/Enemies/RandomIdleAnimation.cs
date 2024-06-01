@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Этот класс управляет случайной анимацией бездействия.
 public class RandomIdleAnimation : MonoBehaviour
 {
     private Animator myAnimator;
@@ -10,6 +11,7 @@ public class RandomIdleAnimation : MonoBehaviour
         myAnimator = GetComponent<Animator>();
     }
 
+//вызывается при старте игры. Запускает случайную анимацию бездействия.
     private void Start() {
         if (!myAnimator) { return; }
 

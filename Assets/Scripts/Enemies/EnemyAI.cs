@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Этот класс управляет поведением врага (блуждание и атака).
 public class EnemyAI : MonoBehaviour
 {
     [SerializeField] private float roamChangeDirFloat = 2f;
@@ -23,19 +24,23 @@ public class EnemyAI : MonoBehaviour
     private State state;
     private EnemyPathfinding enemyPathfinding;
 
+//вызывается при создании объекта. Инициализирует начальное состояние.
     private void Awake() {
         enemyPathfinding = GetComponent<EnemyPathfinding>();
         state = State.Roaming;
     }
 
+// вызывается при старте игры. Устанавливает начальную позицию блуждания.
     private void Start() {
         roamPosition = GetRoamingPosition();
     }
 
+//вызывается каждый кадр. Управляет состояниями врага.
     private void Update() {
         MovementStateControl();
     }
 
+//контролирует текущие действия врага в зависимости от состояния.
     private void MovementStateControl() {
         switch (state)
         {
@@ -50,6 +55,7 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+//управляет блужданием врага.
     private void Roaming() {
         timeRoaming += Time.deltaTime;
 
@@ -64,6 +70,7 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+//управляет атакой врага.
     private void Attacking() {
         if (Vector2.Distance(transform.position, PlayerController.Instance.transform.position) > attackRange)
         {
@@ -85,11 +92,13 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+//корутина для перезарядки атаки.
     private IEnumerator AttackCooldownRoutine() {
         yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
     }
 
+//определяет новую позицию блуждания.
     private Vector2 GetRoamingPosition() {
         timeRoaming = 0f;
         return new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Этот класс управляет врагом типа "Виноград".
 public class Grape : MonoBehaviour, IEnemy
 {
     [SerializeField] private GameObject grapeProjectilePrefab;
@@ -11,11 +12,13 @@ public class Grape : MonoBehaviour, IEnemy
 
     readonly int ATTACK_HASH = Animator.StringToHash("Attack");
 
+//вызывается при создании объекта. Инициализирует компоненты.
     private void Awake() {
         myAnimator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+//выполняет атаку, активирует анимацию и переворот спрайта.
     public void Attack() {
         myAnimator.SetTrigger(ATTACK_HASH);
 
@@ -26,6 +29,7 @@ public class Grape : MonoBehaviour, IEnemy
         }
     }
 
+//создает снаряд при анимации атаки.
     public void SpawnProjectileAnimEvent() {
         Instantiate(grapeProjectilePrefab, transform.position, Quaternion.identity);
     }

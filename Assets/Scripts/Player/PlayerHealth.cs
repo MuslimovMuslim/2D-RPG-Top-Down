@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+//отвечает за здоровье игрока.
 public class PlayerHealth : Singleton<PlayerHealth>
 {
     public bool isDead { get; private set; }
@@ -22,6 +23,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
     const string TOWN_TEXT = "Scene1";
     readonly int DEATH_HASH = Animator.StringToHash("Death");
 
+//Инициализация компонентов при создании объекта.
     protected override void Awake() {
         base.Awake();
 
@@ -29,6 +31,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
         knockback = GetComponent<Knockback>();
     }
 
+// Установка начальных параметров и обновление слайдера здоровья.
     private void Start() {
         isDead = false;
         currentHealth = maxHealth;
@@ -36,6 +39,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
         UpdateHealthSlider();
     }
 
+//Обработка столкновений с врагами.
     private void OnCollisionStay2D(Collision2D other) {
         EnemyAI enemy = other.gameObject.GetComponent<EnemyAI>();
 
@@ -44,6 +48,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
         }
     }
 
+//Восстановление здоровья игрока на одну единицу.
     public void HealPlayer() {
         if (currentHealth < maxHealth) {
             currentHealth += 1;
@@ -51,6 +56,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
         }
     }
 
+//Обработка получения урона, запуск анимаций и эффектов, обновление здоровья.
     public void TakeDamage(int damageAmount, Transform hitTransform) {
         if (!canTakeDamage) { return; }
 
@@ -64,6 +70,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
         CheckIfPlayerDeath();
     }
 
+//Проверка состояния здоровья игрока и запуск процесса смерти, если здоровье <= 0.
     private void CheckIfPlayerDeath() {
         if (currentHealth <= 0 && !isDead) {
             isDead = true;
@@ -74,17 +81,20 @@ public class PlayerHealth : Singleton<PlayerHealth>
         }
     }
 
+//Корутин для обработки смерти игрока и перезагрузки сцены.
     private IEnumerator DeathLoadSceneRoutine() {
         yield return new WaitForSeconds(2f);
         Destroy(gameObject);
         SceneManager.LoadScene(TOWN_TEXT);
     }
 
+//Корутин для восстановления способности получать урон через определённое время.
     private IEnumerator DamageRecoveryRoutine() {
         yield return new WaitForSeconds(damageRecoveryTime);
         canTakeDamage = true;
     }
 
+//Обновление значений слайдера здоровья.
     private void UpdateHealthSlider() {
         if (healthSlider == null) {
             healthSlider = GameObject.Find(HEALTH_SLIDER_TEXT).GetComponent<Slider>();

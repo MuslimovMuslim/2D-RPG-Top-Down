@@ -10,6 +10,8 @@ public class GrapeProjectile : MonoBehaviour
     [SerializeField] private GameObject grapeProjectileShadow;
     [SerializeField] private GameObject splatterPrefab;
 
+
+//вызывается при старте игры. Создает тень снаряда и запускает корутины для движения снаряда и его тени.
     private void Start() {
         GameObject grapeShadow = 
         Instantiate(grapeProjectileShadow, transform.position + new Vector3(0, -0.3f, 0), Quaternion.identity);
@@ -21,6 +23,7 @@ public class GrapeProjectile : MonoBehaviour
         StartCoroutine(MoveGrapeShadowRoutine(grapeShadow, grapeShadowStartPosition, playerPos));
     }
 
+// корутина, управляющая движением снаряда по кривой.
     private IEnumerator ProjectileCurveRoutine(Vector3 startPosition, Vector3 endPosition) {
         float timePassed = 0f;
 
@@ -39,6 +42,7 @@ public class GrapeProjectile : MonoBehaviour
         Destroy(gameObject);
     }
 
+//корутина, управляющая движением тени снаряда.
     private IEnumerator MoveGrapeShadowRoutine(GameObject grapeShadow, Vector3 startPosition, Vector3 endPosition) {
         float timePassed = 0f;
 

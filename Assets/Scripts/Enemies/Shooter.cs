@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Этот класс управляет врагом-стрелком, который стреляет снарядами.
 public class Shooter : MonoBehaviour, IEnemy
 {
     [SerializeField] private GameObject bulletPrefab;
@@ -18,6 +19,7 @@ public class Shooter : MonoBehaviour, IEnemy
 
     private bool isShooting = false;
 
+//вызывается при изменении параметров в редакторе Unity. Обеспечивает корректное значение некоторых переменных.
     private void OnValidate() {
         if (oscillate) { stagger = true; }
         if (!oscillate) { stagger = false; }
@@ -30,12 +32,14 @@ public class Shooter : MonoBehaviour, IEnemy
         if (bulletMoveSpeed <= 0) { bulletMoveSpeed = 0.1f; }
     }
 
+//метод, вызываемый для атаки
     public void Attack() {
         if (!isShooting) {
             StartCoroutine(ShootRoutine());
         }
     }
 
+// корутина, управляющая атакой.
     private IEnumerator ShootRoutine()
     {
         isShooting = true;
@@ -90,6 +94,7 @@ public class Shooter : MonoBehaviour, IEnemy
         isShooting = false;
     }
 
+//Этот метод определяет угловой диапазон, в пределах которого будут выпущены снаряды. 
     private void TargetConeOfInfluence(out float startAngle, out float currentAngle, out float angleStep, out float endAngle)
     {
         Vector2 targetDirection = PlayerController.Instance.transform.position - transform.position;
@@ -109,6 +114,7 @@ public class Shooter : MonoBehaviour, IEnemy
         }
     }
 
+// Этот метод используется для определения местоположения, откуда будет выпущен снаряд.
     private Vector2 FindBulletSpawnPos(float currentAngle) {
         float x = transform.position.x + startingDistance * Mathf.Cos(currentAngle * Mathf.Deg2Rad);
         float y = transform.position.y + startingDistance * Mathf.Sin(currentAngle * Mathf.Deg2Rad);

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//отвечает за поведение меча, которым управляет игрок.
 public class Sword : MonoBehaviour, IWeapon
 {
     [SerializeField] private GameObject slashAnimPrefab;
@@ -14,23 +15,28 @@ public class Sword : MonoBehaviour, IWeapon
 
     private GameObject slashAnim;
 
+// Инициализация аниматора.
     private void Awake() {
         myAnimator = GetComponent<Animator>();
     }
 
+//Получение коллайдера оружия и точки появления анимации.
     private void Start() {
         weaponCollider = PlayerController.Instance.GetWeaponCollider();
         slashAnimSpawnPoint = GameObject.Find("SlashSpawnPoint").transform;
     }
 
+//Обновление позиции меча относительно мыши.
     private void Update() {
         MouseFollowWithOffset();
     }
 
+//Возвращает информацию о мече.
     public WeaponInfo GetWeaponInfo() {
         return weaponInfo;
     }
 
+// Выполняет атаку мечом, активирует коллайдер и создаёт анимацию удара.
     public void Attack() {
         myAnimator.SetTrigger("Attack");
         weaponCollider.gameObject.SetActive(true);
@@ -38,11 +44,13 @@ public class Sword : MonoBehaviour, IWeapon
         slashAnim.transform.parent = this.transform.parent;
     }
 
+// Деактивирует коллайдер после завершения анимации атаки.
     public void DoneAttackingAnimEvent() {
         weaponCollider.gameObject.SetActive(false);
     }
 
 
+//SwingUpFlipAnimEvent, SwingDownFlipAnimEvent: Управляют ориентацией анимации удара в зависимости от направления.
     public void SwingUpFlipAnimEvent() {
         slashAnim.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
 
@@ -50,7 +58,6 @@ public class Sword : MonoBehaviour, IWeapon
             slashAnim.GetComponent<SpriteRenderer>().flipX = true;
         }
     }
-
     public void SwingDownFlipAnimEvent() {
         slashAnim.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
 
@@ -60,6 +67,7 @@ public class Sword : MonoBehaviour, IWeapon
         }
     }
 
+//Обновляет ориентацию меча в зависимости от положения мыши.
     private void MouseFollowWithOffset() {
         Vector3 mousePos = Input.mousePosition;
         Vector3 playerScreenPoint = Camera.main.WorldToScreenPoint(PlayerController.Instance.transform.position);
