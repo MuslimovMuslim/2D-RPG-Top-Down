@@ -14,6 +14,7 @@ public class Knockback : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
+// Получает эффект отбрасывания на объекте.
     public void GetKnockedBack(Transform damageSource, float knockBackThrust) {
         GettingKnockedBack = true;
         Vector2 difference = (transform.position - damageSource.position).normalized * knockBackThrust * rb.mass;
@@ -21,6 +22,7 @@ public class Knockback : MonoBehaviour
         StartCoroutine(KnockRoutine());
     }
 
+// Корутина для управления эффектом отбрасывания.
     private IEnumerator KnockRoutine() {
         yield return new WaitForSeconds(knockBackTime);
         rb.velocity = Vector2.zero;

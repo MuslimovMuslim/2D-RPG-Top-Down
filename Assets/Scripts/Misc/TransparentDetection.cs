@@ -12,11 +12,13 @@ public class TransparentDetection : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Tilemap tilemap;
 
+// Получает компонент SpriteRenderer или Tilemap.
     private void Awake() {
         spriteRenderer = GetComponent<SpriteRenderer>();
         tilemap = GetComponent<Tilemap>();
     }
 
+// Метод OnTriggerEnter2D вызывается, когда Collider2D входит в триггер.
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.GetComponent<PlayerController>()) {
             if (spriteRenderer) {
@@ -27,6 +29,7 @@ public class TransparentDetection : MonoBehaviour
         }
     }
 
+// Метод OnTriggerExit2D вызывается, когда Collider2D выходит из триггера.
     private void OnTriggerExit2D(Collider2D other) {
         if (other.gameObject.GetComponent<PlayerController>())
         {
@@ -38,6 +41,7 @@ public class TransparentDetection : MonoBehaviour
         }
     }
 
+// Корутина для затухания компонента SpriteRenderer.
     private IEnumerator FadeRoutine(SpriteRenderer spriteRenderer, float fadeTime, float startValue, float targetTransparency) {
         float elapsedTime = 0;     
         while (elapsedTime < fadeTime)
@@ -49,6 +53,7 @@ public class TransparentDetection : MonoBehaviour
         }
     }
 
+// Корутина для затухания компонента Tilemap.
     private IEnumerator FadeRoutine(Tilemap tilemap, float fadeTime, float startValue, float targetTransparency)
     {
         float elapsedTime = 0;

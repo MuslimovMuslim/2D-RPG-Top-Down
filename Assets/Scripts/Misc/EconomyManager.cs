@@ -10,6 +10,7 @@ public class EconomyManager : Singleton<EconomyManager>
 
     const string COIN_AMOUNT_TEXT = "Gold Amount Text";
 
+//// Обновляет текущее количество золота и отображает его.
     public void UpdateCurrentGold() {
         currentGold += 1;
 
