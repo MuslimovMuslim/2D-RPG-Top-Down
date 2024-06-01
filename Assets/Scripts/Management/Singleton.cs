@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//класс Singleton<T> является обобщенным классом для создания синглтонов в Unity. 
 public class Singleton<T> : MonoBehaviour where T : Singleton<T> 
 {
     private static T instance;

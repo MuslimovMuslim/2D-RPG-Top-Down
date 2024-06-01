@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//управления входами в области в игре.
 public class AreaEntrance : MonoBehaviour
 {
     [SerializeField] private string transitionName;

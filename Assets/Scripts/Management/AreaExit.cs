@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
+/*Этот класс используется для управления выходами 
+из областей в игре. Когда игрок пересекает триггер 
+выхода из области (метод OnTriggerEnter2D), он начинает
+ процесс перехода в другую сцену (sceneToLoad). 
+ Это включает в себя установку имени перехода в 
+ SceneManagement, затемнение экрана с помощью UIFade,
+  и, наконец, загрузку новой 
+сцены после короткой задержки (LoadSceneRoutine).*/
 public class AreaExit : MonoBehaviour
 {
     [SerializeField] private string sceneToLoad;
